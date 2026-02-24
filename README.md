@@ -4,7 +4,8 @@
 
 This is a small animated countdown project created to deeply understand CSS animations.
 
-The original code is not mine, is from: github.com/bradtraversy 
+The original code is not mine, is from: [github.com/bradtraversy ](https://github.com/bradtraversy)
+
 The documentation added throughout the HTML, CSS, and JavaScript files is my work.
 
 The purpose of this project is educational:
