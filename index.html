@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- =====================================================
+      1) METADATA (Browser + SEO basics)
+      - charset: which characters the page supports (UTF-8 is standard)
+      - viewport: makes the layout behave correctly on mobile devices
+    ====================================================== -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- =====================================================
+      2) CSS LINK
+      This loads your external CSS file.
+      HTML describes structure; CSS describes appearance/animation.
+    ====================================================== -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Page title shown in browser tab -->
+    <title>Animated Countdown</title>
+  </head>
+
+  <body>
+    <!-- =====================================================
+      3) COUNTDOWN "SCREEN"
+      This block is visible first.
+      It contains:
+      - .nums : a viewport box that "shows" one number at a time
+      - spans : each number is its own element so we can animate them
+      - h4 : "Get Ready" text below the numbers
+    ====================================================== -->
+    <div class="counter">
+      <div class="nums">
+        <!-- "in" means: start this span as the currently active one -->
+        <span class="in">3</span>
+        <span>2</span>
+        <span>1</span>
+        <span>0</span>
+      </div>
+
+      <h4>Get Ready</h4>
+    </div>
+
+    <!-- =====================================================
+      4) FINAL "SCREEN"
+      This block is hidden at first (scaled down in CSS).
+      When the countdown finishes, JS adds .show to make it appear.
+    ====================================================== -->
+    <div class="final">
+      <h1>GO</h1>
+
+      <!-- =====================================================
+        Replay button
+        - id="replay" so JS can find it fast with #replay selector
+        - inner <span> used for the arrow animation via ::after in CSS
+      ====================================================== -->
+      <button id="replay">
+        <span>Replay</span>
+      </button>
+    </div>
+
+    <!-- =====================================================
+      5) JAVASCRIPT
+      Loaded at the end of <body> so the DOM exists before JS runs.
+      That way querySelector() can find elements safely.
+    ====================================================== -->
+    <script src="script.js"></script>
+  </body>
+</html>

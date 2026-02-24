@@ -1,0 +1,307 @@
+/* =====================================================
+   CSS FILE: Animated Countdown
+   Goal:
+   - Show numbers 3 → 2 → 1 → 0 with a rotation animation
+   - Then hide the countdown container and show the final message
+   - Provide a button with a small hover "arrow slide" effect
+===================================================== */
+
+/* =====================================================
+   1) FONT IMPORT
+   Loads Roboto from Google Fonts.
+   This must be at the top of the CSS file.
+===================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+/* =====================================================
+   2) GLOBAL RESET / CONSISTENCY
+   box-sizing: border-box
+   - makes width/height include padding and border
+   - helps layout behave predictably across elements
+===================================================== */
+* {
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   3) PAGE BASE STYLES
+   body:
+   - font-family: apply Roboto everywhere by default
+   - margin: 0 removes default browser spacing
+   - height: 100vh uses full viewport height
+   - overflow: hidden prevents scrollbars during animations
+===================================================== */
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* =====================================================
+   4) TEXT STYLES
+   h4:
+   - size + small margin
+   - uppercase for visual emphasis
+===================================================== */
+h4 {
+  font-size: 20px;
+  margin: 5px;
+  text-transform: uppercase;
+}
+
+/* =====================================================
+   5) COUNTDOWN CONTAINER (.counter)
+   We center it with a classic trick:
+   - position: fixed + top/left 50%
+   - translate(-50%, -50%) moves the element back by half its size
+   This centers it perfectly regardless of its dimensions.
+===================================================== */
+.counter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* =====================================================
+   6) "HIDE" STATE FOR COUNTDOWN
+   When JS adds .hide:
+   - We scale the counter to 0 (it shrinks into nothing)
+   - We also run a short hide animation for smoothness
+===================================================== */
+.counter.hide {
+  transform: translate(-50%, -50%) scale(0);
+  animation: hide 0.2s ease-out;
+}
+
+/* =====================================================
+   7) KEYFRAMES: hide
+   Animations describe *how* a property changes over time.
+
+   This one:
+   - starts at scale(1)
+   - ends at scale(0)
+   It's short (0.2s) because we just want a quick vanish.
+===================================================== */
+@keyframes hide {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
+
+/* =====================================================
+   8) FINAL CONTAINER (.final)
+   Also centered like .counter.
+   But initially scaled down to 0 so it's invisible.
+===================================================== */
+.final {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  text-align: center;
+}
+
+/* =====================================================
+   9) "SHOW" STATE FOR FINAL SCREEN
+   When JS adds .show:
+   - it scales to 1 (normal size)
+   - runs a "pop" animation (scale up slightly then settle)
+===================================================== */
+.final.show {
+  transform: translate(-50%, -50%) scale(1);
+  animation: show 0.2s ease-out;
+}
+
+/* =====================================================
+   10) KEYFRAMES: show
+   A small bounce effect:
+   - start tiny
+   - overshoot (1.4)
+   - settle at 1
+===================================================== */
+@keyframes show {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  30% {
+    transform: translate(-50%, -50%) scale(1.4);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* =====================================================
+   11) NUMBER VIEWPORT (.nums)
+   This element is like a "window" that shows one number.
+
+   Important:
+   - position: relative so its children (spans) can be absolute
+   - overflow: hidden hides spans while they rotate "outside" the box
+   - fixed height/width creates a stable stage for animation
+===================================================== */
+.nums {
+  color: #59896c;
+  font-size: 50px;
+  position: relative;
+  overflow: hidden;
+  width: 250px;
+  height: 50px;
+}
+
+/* =====================================================
+   12) BASE STYLE FOR EACH NUMBER SPAN
+   We stack all spans in the same place by using absolute positioning:
+   - position: absolute removes element from normal flow
+   - top/left 50% + translate(-50%, -50%) centers it inside .nums
+
+   Then we set a default rotation (120deg) so it's "off-stage".
+   transform-origin: bottom center means the rotation pivots from bottom.
+===================================================== */
+.nums span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  /* Center + rotate away by default */
+  transform: translate(-50%, -50%) rotate(120deg);
+
+  /* Pivot point for rotation */
+  transform-origin: bottom center;
+}
+
+/* =====================================================
+   13) ACTIVE "IN" STATE
+   When a span gets class "in":
+   - it rotates into place (0deg)
+   - plays goIn animation for 0.5s
+===================================================== */
+.nums span.in {
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: goIn 0.5s ease-in-out;
+}
+
+/* =====================================================
+   14) ACTIVE "OUT" STATE
+   When JS changes a span from in → out:
+   - it plays goOut to rotate away
+===================================================== */
+.nums span.out {
+  animation: goOut 0.5s ease-in-out;
+}
+
+/* =====================================================
+   15) KEYFRAMES: goIn
+   This is the "enter" animation.
+   It rotates from 120deg (far away) to 0deg (front).
+   Intermediate angles create a more natural movement.
+===================================================== */
+@keyframes goIn {
+  0% {
+    transform: translate(-50%, -50%) rotate(120deg);
+  }
+
+  30% {
+    transform: translate(-50%, -50%) rotate(-20deg);
+  }
+
+  60% {
+    transform: translate(-50%, -50%) rotate(10deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+}
+
+/* =====================================================
+   16) KEYFRAMES: goOut
+   This is the "exit" animation.
+   It rotates from 0deg to -120deg (leaving the viewport).
+===================================================== */
+@keyframes goOut {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  60% {
+    transform: translate(-50%, -50%) rotate(20deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(-120deg);
+  }
+}
+
+/* =====================================================
+   17) REPLAY BUTTON BASE STYLES
+   - background-color sets the main fill
+   - border: none removes default border
+   - border-radius rounds corners
+   - cursor: pointer shows a hand cursor on hover
+   - transition makes hover changes smooth
+===================================================== */
+#replay {
+  background-color: #59896c;
+  border-radius: 3px;
+  border: none;
+  color: aliceblue;
+  padding: 5px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+/* =====================================================
+   18) INNER SPAN IN BUTTON
+   This span is used to animate the arrow appearance.
+   - position: relative so ::after can be positioned relative to it
+===================================================== */
+#replay span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.3s;
+}
+
+/* =====================================================
+   19) PSEUDO-ELEMENT: span::after
+   We create an extra "fake element" after the text.
+   content: '\00bb' is the » character.
+   - opacity: 0 hides it initially
+   - right: -20px places it slightly outside
+===================================================== */
+#replay span:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+/* =====================================================
+   20) HOVER EFFECT
+   When hovering the button:
+   - add padding-right to make space for the arrow
+   - bring arrow in by moving right from -20px to 0
+   - fade arrow in with opacity 1
+===================================================== */
+#replay:hover span {
+  padding-right: 25px;
+}
+
+#replay:hover span:after {
+  opacity: 1;
+  right: 0;
+}
