@@ -1,4 +1,4 @@
-# ✦ Animated mini-countdown – HTML/CSS Learning Project
+# ✦ Mini-countdown – HTML/CSS Learning Project
 
 ## ✧ About This Project
 
